@@ -1,8 +1,9 @@
 'use strict'
 
 const mongoose = require('mongoose')
-mongoose.connectString = `mongodb://localhost:27017/shopDEV`
+const connectString = `mongodb://localhost:27017/shopDEV`
 
+const {countConnect} = require('../helpers/check.connect')
 
 class Database{
     constructor(){
@@ -15,7 +16,10 @@ class Database{
             mongoose.set('debug',{color: true})
         }
 
-        mongoose.connect(connectString).then(_ =>console.log(`Connect MongoDB Success Pro`))
+        mongoose.connect(connectString, {
+            maxPoolSize: 50
+        }).then(_ => {
+            console.log(`Connect MongoDB Success Pro`),countConnect()})
     .catch(err => console.log(`Error Connect!`))
     }
 
