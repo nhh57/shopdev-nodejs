@@ -7,3 +7,7 @@ npm i helmet --save-dev
 npm i compression --save-dev
 
 npm i dotenv --save-dev
+
+npm i bcrypt --save-dev
+
+npm  i crypto --save-dev

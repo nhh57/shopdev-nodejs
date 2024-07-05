@@ -5,7 +5,7 @@ const express =  require('express')
 const morgan = require('morgan')
 const app = express()
 
-console.log(`Process::`,process.env)
+// console.log(`Process::`,process.env)
 // init middleware
 app.use(morgan("dev"))
 app.use(helmet())
@@ -14,15 +14,10 @@ app.use(compression())
 require('./dbs/init.mongodb')
 // init router
 
-//handling error    
+//handling error
 
-const {checkOverload} = require('./helpers/check.connect')
-checkOverload()
-app.get('/',(req,res,next) =>{
-    //const strCompress ="Hello"
-    return res.status(200).json({
-        message: "Hello"
-    })
-})
+// const {checkOverload} = require('./helpers/check.connect')
+// checkOverload()
+app.use('/',require('./routes'))
 module.exports = app
 

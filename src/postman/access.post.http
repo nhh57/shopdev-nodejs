@@ -1,0 +1,11 @@
+@url_dev=http://10.56.66.52:3056/v1/api/
+### signup
+
+POST http://10.56.66.52:3056/v1/api/shop/signup
+Content-Type: application/json
+
+{
+    "name":"Shop TIPS",
+    "email":"shoptips@gmail.com",
+    "password":"abc@123"
+}
