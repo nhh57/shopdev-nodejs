@@ -13,7 +13,7 @@ npm i bcrypt --save-dev
 npm  i crypto --save-dev
 
 
-DEV_APP_PORT=3000s
+DEV_APP_PORT=3000
 DEV_DB_HOST =10.56.66.54
 DEV_DB_PORT=27017
 DEV_DB_NAME=dbDev
