@@ -18,6 +18,9 @@ require('./dbs/init.mongodb')
 
 // const {checkOverload} = require('./helpers/check.connect')
 // checkOverload()
+
+app.use(express.json()); // Sử dụng middleware này để xử lý JSON
+app.use(express.urlencoded({ extended: true })); // Sử dụng middleware này để xử lý URL-encoded data
 app.use('/',require('./routes'))
 module.exports = app
 
