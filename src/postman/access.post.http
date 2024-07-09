@@ -3,10 +3,10 @@
 
 POST http://10.56.66.52:3056/v1/api/shop/signup
 Content-Type: application/json
-x-api-key: e7eb675e7f6cd7cb7ac48cac5ab6e2b522056949e3530949aa2d48eb57c717b83d0a4381cac05b9274d7c70bca1d6fb3ad3b6941c5eb080c60ca198f941830b3
+x-api-key: c9e305f9564ec21b632fe867d238279a5502aa67f4f5710c6e72efcadd5902db163e93216865886ce463388c441975e8d1fd84862eaf37da645912a6b9fd4929
 
 {
-    "name":"Shop TIPS",
-    "email":"shoptips22@gmail.com",
-    "password":"abc@123"
+  "name": "Shop TIPS",
+  "email": "shoptips22@gmail.com",
+  "password": "abc@123"
 }

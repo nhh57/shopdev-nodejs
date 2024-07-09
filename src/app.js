@@ -21,6 +21,22 @@ require('./dbs/init.mongodb')
 
 app.use(express.json()); // Sử dụng middleware này để xử lý JSON
 app.use(express.urlencoded({ extended: true })); // Sử dụng middleware này để xử lý URL-encoded data
+
 app.use('/',require('./routes'))
+
+app.use((req,res,next) => {
+    const error = new Error('Not Found')
+    error.status = 404
+    next(error)
+})
+
+app.use((error,req,res,next) => {
+    const statusCode = error.status || 500
+    return  res.status(statusCode).json({
+        status : 'error',
+        code :statusCode,
+        message: error.message || 'Internal Server Error'
+    })
+})
 module.exports = app
 

@@ -6,6 +6,7 @@ const shopModel = require('../models/shop.model')
 const {getInfoData} = require('../utils/index')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
+const {BadRequestError} = require("../core/error.response");
 
 const RoleShop = {
     SHOP: 'SHOP',
@@ -19,15 +20,12 @@ class AccessService {
 
     static signUp = async ({ name, email, password }) => {
         console.log("signUp:: name %s :: email %s :: password %s",name,email,password)
-        try {
+        // try {
             // b1 check mail exists??
             const holderShop = await shopModel.findOne({ email }).lean()
             console.log('holderShop::', holderShop)
             if (holderShop) {
-                return {
-                    code: 'xxxx',
-                    message: 'Shop already registered!'
-                }
+                 throw new BadRequestError('Error Shop already registered!')
             }
 
             const passwordHash = await bcrypt.hash(password, 10)
@@ -59,12 +57,12 @@ class AccessService {
                     publicKey,
                     privateKey
                 })
-
                 if(!keyStore){
-                    return {
-                        code :'xxxx',
-                        message :'keyStore error'
-                    }
+                    throw new BadRequestError('KeyStore Error')
+                    // return {
+                    //     code :'xxxx',
+                    //     message :'keyStore error'
+                    // }
                 }
                 // create token pair
                 const tokens = await createTokenPair({userId: newShop._id, email}, publicKey,privateKey)
@@ -85,14 +83,14 @@ class AccessService {
                 metadata: null
             }
 
-        } catch (error) {
-            console.error(error)
-            return {
-                code: 'XXX',
-                message: error.message,
-                status: 'error'
-            }
-        }
+        // } catch (error) {
+        //     console.error(error)
+        //     return {
+        //         code: 'XXX',
+        //         message: error.message,
+        //         status: 'error'
+        //     }
+        // }
     }
 }
 
