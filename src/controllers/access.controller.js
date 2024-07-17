@@ -2,9 +2,16 @@
 
 const AccessService = require('../services/access.service')
 const {CREATED, SuccessResponse} = require("../core/success.response");
-const {next} = require("lodash/seq");
 
 class AccessController {
+
+    logout = async (req, res, next) => {
+        console.log(`[P]::logout::`, req.keyStore);
+        new SuccessResponse({
+            message: "Logout success!",
+            metadata: await AccessService.logout(req.keyStore)
+        }).send((res))
+    }
     login = async (req, res, next) => {
         console.log(`[P]::login::`, req.body);
         new SuccessResponse({
