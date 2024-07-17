@@ -18,9 +18,14 @@ var keyTokenSchema = new Schema({
             type: String, require: true
         },
 
-        refreshToken: {
+        refreshTokenUsed: {
             type: Array,
-            default: []
+            default: [] // nhung RT da dc su dung
+        },
+
+        refreshToken: {
+            type: String,
+            require: true
         }
     },
     {
