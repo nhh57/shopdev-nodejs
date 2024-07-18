@@ -44,7 +44,7 @@ class AccessService {
         const privateKey = crypto.randomBytes(64).toString('hex')
         const publicKey = crypto.randomBytes(64).toString('hex')
         //4. generate tokens
-        const {_id, userId} = foundShop
+        const {_id: userId} = foundShop
 
         const tokens = await createTokenPair({userId, email}, publicKey, privateKey)
 

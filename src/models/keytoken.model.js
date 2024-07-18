@@ -8,24 +8,24 @@ const COLLECTION_NAME = 'Keys';
 var keyTokenSchema = new Schema({
         user: {
             type: Schema.Types.ObjectId,
-            require: true,
+            required: true,
             ref: 'Shop',
         },
         publicKey: {
-            type: String, require: true
+            type: String, required: true
         },
         privateKey: {
-            type: String, require: true
+            type: String, required: true
         },
 
-        refreshTokenUsed: {
+        refreshTokensUsed: {
             type: Array,
             default: [] // nhung RT da dc su dung
         },
 
         refreshToken: {
             type: String,
-            require: true
+            required: true
         }
     },
     {

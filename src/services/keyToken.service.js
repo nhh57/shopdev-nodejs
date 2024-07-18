@@ -20,8 +20,8 @@ class KeyTokenService {
 
             // lv xxx
             const filter = {user: userId}, update = {
-                publicKey, privateKey, refreshTokenUsed: [], refreshToken
-            }, options = {upsert: true, new: true}
+                publicKey, privateKey, refreshTokensUsed: [], refreshToken
+            }, options = {new: true, upsert: true}
 
             const tokens = await keytokenModel.findOneAndUpdate(filter, update, options)
 
@@ -32,11 +32,11 @@ class KeyTokenService {
     }
 
     static findByUserId = async (userId) => {
-        return await keytokenModel.findOne({user:new Types.ObjectId(userId)}).lean()
+        return await keytokenModel.findOne({user: new Types.ObjectId(userId)}).lean()
     }
 
     static removeKeyById = async (id) =>{
-        return await keytokenModel.remove(id)
+        return await keytokenModel.deleteOne( id )
     }
 }
 
