@@ -18,6 +18,34 @@ const RoleShop = {
 }
 
 class AccessService {
+    static handlerRefreshTokenV2 = async ({keyStore, user, refreshToken}) => {
+        console.log('start -- service -- handlerRefreshTokenV2')
+        const {userId, email} = user;
+        if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+            await KeyTokenService.deleteKeyById(userId)
+            throw new ForbiddenError('Something wrong happened !! Pls relogin')
+        }
+        if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop not registered')
+        //check userId
+        const foundShop = await findByEmail({email})
+        if (!foundShop) throw new AuthFailureError('Shop not registered 2')
+        // tao 1 cap moi
+        const tokens = await createTokenPair({userId, email}, keyStore.publicKey, keyStore.privateKey)
+        // cap nhat token
+        await keyStore.updateOne( {
+            $set: {
+                refreshToken: tokens.refreshToken
+            },
+            $addToSet: {
+                refreshTokensUsed: refreshToken // da dc su dung de lay token moi
+            }
+        })
+        return {
+            user,
+            tokens
+        }
+    }
+
     /*
     1 check this token used?
     */
@@ -44,21 +72,21 @@ class AccessService {
 
         // tao 1 cap moi
         const tokens = await createTokenPair({userId, email},
-                                holderToken.publicKey, holderToken.privateKey)
+            holderToken.publicKey, holderToken.privateKey)
         // cap nhat token
         await holderToken.updateOne({
-            $set:{
+            $set: {
                 refreshToken: tokens.refreshToken
 
             },
-            $addToSet:{
-                refreshTokensUsed : refreshToken // da dc su dung de lay token moi
+            $addToSet: {
+                refreshTokensUsed: refreshToken // da dc su dung de lay token moi
             }
         })
-    return {
-            userId:{userId, email},
-        tokens
-    }
+        return {
+            userId: {userId, email},
+            tokens
+        }
     }
 
     static logout = async (keyStore) => {

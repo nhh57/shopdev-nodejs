@@ -1,14 +1,45 @@
-@url_dev=http://10.56.66.52:3056/v1/api/
-### signup
+@url_dev=http://10.56.66.52:3056
 
-POST http://10.56.66.52:3056/v1/api/shop/signup
+###Signup
+POST /v1/api/shop/signup HTTP/1.1
+Host: 10.56.66.52:3056
+x-api-key: 4fd462e10a08d037213a5bc1e9e3daade84af371bb5873e0dd2de8f817def201c28d17fa8435c80216f7d9faabb27dcf68cfc69f6a78faa6798dc98c5e2eda5a
 Content-Type: application/json
-x-api-key: c9e305f9564ec21b632fe867d238279a5502aa67f4f5710c6e72efcadd5902db163e93216865886ce463388c441975e8d1fd84862eaf37da645912a6b9fd4929
 
 {
-  "name": "Shop TIPS",
-  "email": "shoptips2222@gmail.com",
+  "name": "hainh",
+  "email": "nguyenhoanghai@gmail.com",
   "password": "abc@123"
 }
 
+
+###Login
+POST /v1/api/shop/login HTTP/1.1
+Host: localhost:3056
+x-api-key: 4fd462e10a08d037213a5bc1e9e3daade84af371bb5873e0dd2de8f817def201c28d17fa8435c80216f7d9faabb27dcf68cfc69f6a78faa6798dc98c5e2eda5a
+Content-Type: application/json
+
+{
+  "email":"nguyenhoanghai@gmail.com",
+  "password" :"abc@123"
+}
+
+###logout
+POST /v1/api/shop/logout HTTP/1.1
+Host: 10.56.66.52:3056
+x-api-key: 4fd462e10a08d037213a5bc1e9e3daade84af371bb5873e0dd2de8f817def201c28d17fa8435c80216f7d9faabb27dcf68cfc69f6a78faa6798dc98c5e2eda5a
+x-client-id: 6698edbfd7a059037907cf3a
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk4ZWRiZmQ3YTA1OTAzNzkwN2NmM2EiLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyMTI5ODM4MywiZXhwIjoxNzIxNDcxMTgzfQ.tDUyg9uvio3egeDj3JqYm05RyxBWaqo-n8L8-LGc1YI
+
+###Refresh Token
+POST /v1/api/shop/handler-refresh-token HTTP/1.1
+Host: 10.56.66.52:3056
+x-api-key: 4fd462e10a08d037213a5bc1e9e3daade84af371bb5873e0dd2de8f817def201c28d17fa8435c80216f7d9faabb27dcf68cfc69f6a78faa6798dc98c5e2eda5a
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk4ZWRiZmQ3YTA1OTAzNzkwN2NmM2EiLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyMTI5ODY3MiwiZXhwIjoxNzIxNDcxNDcyfQ.pqH9ldY93-lSeq208DX-g9WISyr-dEVtxD_Co5fcI9k
+x-client-id: 6698edbfd7a059037907cf3a
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk4ZWRiZmQ3YTA1OTAzNzkwN2NmM2EiLCJlbWFpbCI6Im5ndXllbmhvYW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTcyMTI5ODY3MiwiZXhwIjoxNzIxOTAzNDcyfQ.YdizlGvag8bUqLctj0X9PdorEftQna5rbXqKP4V7z8o"
+}
 
