@@ -12,6 +12,8 @@ npm i bcrypt --save-dev
 
 npm  i crypto --save-dev
 
+npm i slugify --save-dev
+
 
 DEV_APP_PORT=3000
 DEV_DB_HOST =10.56.66.54
