@@ -4,6 +4,7 @@ const {product, electronic, furniture, clothing} = require('../models/product.mo
 const {Types} = require('mongoose')
 const {BadRequestError} = require("../core/error.response");
 const {query} = require("express");
+const {getSelectData, unGetSelectData} = require("../utils");
 
 const findAllDraftForShop = async ({query, limit, skip}) => {
     return queryProduct({query, limit, skip});
@@ -13,9 +14,25 @@ const findAllPublishForShop = async ({query, limit, skip}) => {
     return queryProduct({query, limit, skip});
 }
 
+const findAllProducts = async ({limit, sort, page, filter, select}) => {
+    const skip = (page - 1) * limit
+    const sortBy = sort === 'ctime' ? {_id: -1} : {id: 1}
+    const products = await product.find(filter)
+        .sort(sortBy)
+        .limit(limit)
+        .select(getSelectData(select))
+        .lean()
+    return products
+}
+
+const findProduct = async ({product_id, unSelect}) => {
+    return await product.findById(product_id).select(unGetSelectData(unSelect));
+}
+
 const searchProducts = async ({keySearch}) => {
-    const regexSearch = new RegExp({keySearch})
+    const regexSearch = new RegExp(keySearch)
     const results = await product.find({
+            isDraft: false,
             $text: {$search: regexSearch}
         }, {score: {$meta: 'textScore'}}
     ).sort({score: {$meta: 'textScore'}})
@@ -62,5 +79,7 @@ module.exports = {
     publishProductByShop,
     findAllPublishForShop,
     unPublishProductByShop,
-    searchProducts
+    searchProducts,
+    findAllProducts,
+    findProduct,
 }

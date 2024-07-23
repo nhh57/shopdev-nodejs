@@ -7,6 +7,9 @@ const {authenticationV2} = require("../../auth/auth.Utils");
 const router = express.Router()
 
 router.get('/search/:keySearch',asyncHandler(productController.getListSearchProducts))
+router.get('',asyncHandler(productController.findAllProducts))
+router.get('/:product_id',asyncHandler(productController.findProducts))
+
 
 router.use(authenticationV2)
 router.post('/shop/create-product', asyncHandler(productController.createProduct))
