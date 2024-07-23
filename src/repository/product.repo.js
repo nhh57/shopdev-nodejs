@@ -29,6 +29,18 @@ const findProduct = async ({product_id, unSelect}) => {
     return await product.findById(product_id).select(unGetSelectData(unSelect));
 }
 
+
+const updateProductById = async ({
+    productId,
+    bodyUpdate,
+    model,
+    isNew = true
+}) =>{
+    return await model.findByIdAndUpdate(productId,bodyUpdate,{
+        new:isNew
+    })
+}
+
 const searchProducts = async ({keySearch}) => {
     const regexSearch = new RegExp(keySearch)
     const results = await product.find({
@@ -82,4 +94,5 @@ module.exports = {
     searchProducts,
     findAllProducts,
     findProduct,
+    updateProductById,
 }
