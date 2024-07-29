@@ -15,6 +15,9 @@ const insertInventory = async ({
     })
 }
 
+
+
+
 module.exports={
     insertInventory,
 }

@@ -33,7 +33,7 @@ class ProductController {
     updateProduct = async (req, res, next) => {
         new SuccessResponse({
             message: "update Product success!",
-            metadata: await ProductServiceV2.ProductFactory.updateProduct(req.body.product_type, req.params.productId,{
+            metadata: await ProductServiceV2.ProductFactory.updateProduct(req.body.product_type, req.params.productId, {
                 ...req.body,
                 product_shop: req.user.userId
             })
@@ -83,7 +83,7 @@ class ProductController {
         new SuccessResponse({
             message: "get List Search Publish Products Success!",
             metadata: await ProductServiceV2.ProductFactory.getListSearchProducts(
-            req.params
+                req.params
             )
         }).send(res)
     }
@@ -98,7 +98,7 @@ class ProductController {
         new SuccessResponse({
             message: "get findProduct Success!",
             metadata: await ProductServiceV2.ProductFactory.findProduct({
-                product_id:req.params.product_id
+                product_id: req.params.product_id
             })
         }).send(res)
     }

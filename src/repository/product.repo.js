@@ -16,9 +16,10 @@ const findAllPublishForShop = async ({query, limit, skip}) => {
 
 const findAllProducts = async ({limit, sort, page, filter, select}) => {
     const skip = (page - 1) * limit
-    const sortBy = sort === 'ctime' ? {_id: -1} : {id: 1}
+    const sortBy = sort === 'ctime' ? {_id: -1} : {_id: 1}
     const products = await product.find(filter)
         .sort(sortBy)
+        .skip(skip)
         .limit(limit)
         .select(getSelectData(select))
         .lean()
@@ -31,13 +32,13 @@ const findProduct = async ({product_id, unSelect}) => {
 
 
 const updateProductById = async ({
-    productId,
-    bodyUpdate,
-    model,
-    isNew = true
-}) =>{
-    return await model.findByIdAndUpdate(productId,bodyUpdate,{
-        new:isNew
+                                     productId,
+                                     bodyUpdate,
+                                     model,
+                                     isNew = true
+                                 }) => {
+    return await model.findByIdAndUpdate(productId, bodyUpdate, {
+        new: isNew
     })
 }
 
