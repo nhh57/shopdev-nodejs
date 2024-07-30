@@ -4,7 +4,7 @@ const {product, electronic, furniture, clothing} = require('../models/product.mo
 const {Types} = require('mongoose')
 const {BadRequestError} = require("../core/error.response");
 const {query} = require("express");
-const {getSelectData, unGetSelectData} = require("../utils");
+const {getSelectData, unGetSelectData, convertToObjectIdMongodb} = require("../utils");
 
 const findAllDraftForShop = async ({query, limit, skip}) => {
     return queryProduct({query, limit, skip});
@@ -87,6 +87,11 @@ const queryProduct = async ({query, limit, skip}) => {
         .lean()
         .exec()
 }
+
+
+const gerProductById = async (productId) =>{
+    return await product.findOne({_id:convertToObjectIdMongodb(productId)}).lean()
+}
 module.exports = {
     findAllDraftForShop,
     publishProductByShop,
@@ -96,4 +101,5 @@ module.exports = {
     findAllProducts,
     findProduct,
     updateProductById,
+    gerProductById,
 }
