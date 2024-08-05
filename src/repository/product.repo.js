@@ -89,8 +89,21 @@ const queryProduct = async ({query, limit, skip}) => {
 }
 
 
-const gerProductById = async (productId) =>{
-    return await product.findOne({_id:convertToObjectIdMongodb(productId)}).lean()
+const gerProductById = async (productId) => {
+    return await product.findOne({_id: convertToObjectIdMongodb(productId)}).lean()
+}
+
+const checkProductByServer = async (product) => {
+    return await Promise.all(products.map)(async product => {
+        const foundProduct = await gerProductById(product.productId)
+        if (foundProduct) {
+            return {
+                price: foundProduct.product_price,
+                quantity: product.quantity,
+                productId: product.productId
+            }
+        }
+    })
 }
 module.exports = {
     findAllDraftForShop,
@@ -102,4 +115,5 @@ module.exports = {
     findProduct,
     updateProductById,
     gerProductById,
+    checkProductByServer,
 }
