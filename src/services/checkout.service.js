@@ -6,6 +6,7 @@ const {NotFoundError, BadRequestError} = require("../core/error.response");
 const {checkProductByServer} = require("../repository/product.repo");
 const {getDiscountAmount} = require("../services/discount.service");
 const {acquireLock, releaseLock} = require("./redis.service");
+const {order} = require('../models/order.model')
 
 class CheckoutService {
 
@@ -147,10 +148,48 @@ class CheckoutService {
         // neu co 1 san pham het hang trong kho
         if (acquireProduct.includes(false)) throw new BadRequestError('Mot so san pham da duoc cap nhat vui long quay lai gio hang')
 
-        const newOrder = await order.create()
+        const newOrder = await order.create({
+            order_userId: userId,
+            order_checkout: checkout_order,
+            order_shipping: user_address,
+            order_payment: user_payment,
+            order_products: shop_order_ids_new
+        })
+        // truong hop : new insert thanh cong thi remove product co trong gio hang
+        if (newOrder) {
+            // remove product in my cart
+
+        }
         return newOrder
     }
-}
 
+    /*
+    1 . Query Orders [Users]
+     */
+    static async getOrdersByUser() {
+
+    }
+
+    /*
+     1 . Query Order Using Id [Users]
+      */
+    static async getOneOrderByUser() {
+
+    }
+
+    /*
+     1 . Cancel Orders [Users]
+      */
+    static async cancelOrderByUser() {
+
+    }
+
+    /*
+     1 . Update Orders Status  [Shop | Admin]
+      */
+    static async updateOrderStatusByShop() {
+
+    }
+}
 
 module.exports = CheckoutService
