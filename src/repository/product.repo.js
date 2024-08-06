@@ -94,7 +94,7 @@ const gerProductById = async (productId) => {
 }
 
 const checkProductByServer = async (product) => {
-    return await Promise.all(products.map)(async product => {
+    return await Promise.all(product.map(async product => {
         const foundProduct = await gerProductById(product.productId)
         if (foundProduct) {
             return {
@@ -103,7 +103,7 @@ const checkProductByServer = async (product) => {
                 productId: product.productId
             }
         }
-    })
+    }))
 }
 module.exports = {
     findAllDraftForShop,

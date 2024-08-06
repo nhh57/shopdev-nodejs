@@ -4,7 +4,8 @@
 const {findCartById} = require("../repository/cart.repo");
 const {NotFoundError, BadRequestError} = require("../core/error.response");
 const {checkProductByServer} = require("../repository/product.repo");
-const {DiscountService} = require("../services/discount.service");
+const {getDiscountAmount} = require("../services/discount.service");
+const {acquireLock, releaseLock} = require("./redis.service");
 
 class CheckoutService {
 
@@ -48,9 +49,10 @@ class CheckoutService {
 
 
     static async checkoutReview({cartId, userId, shop_order_ids}) {
-
+        console.log('==========>checkout.service - checkoutReview - checkoutReview:: ', shop_order_ids)
         // check cartId tồn tại không?
         const foundCart = await findCartById(cartId)
+        console.log('cartId::', cartId)
         if (!foundCart) throw new NotFoundError('Cart does not exists!')
 
         const checkout_order = {
@@ -61,7 +63,8 @@ class CheckoutService {
         }, shop_order_ids_new = []
         // tinh tong tien bill
         for (let i = 0; i < shop_order_ids.length; i++) {
-            const {shopId, shop_discount = [], item_products = []} = shop_order_ids[i]
+            const {shopId, shop_discounts = [], item_products = []} = shop_order_ids[i]
+            console.log('shop_discount', JSON.stringify(shop_discounts))
             // check product available
             const checkProductServer = await checkProductByServer(item_products)
             console.log(`checkProductServer::`, checkProductServer)
@@ -87,7 +90,7 @@ class CheckoutService {
             if (shop_discounts.length > 0) {
                 // gia su chi co 1 discount
                 // get amount discount
-                const {totalPrice = o, discount = 0} = await DiscountService.getDiscountAmount({
+                const {totalPrice = 0, discount = 0} = await getDiscountAmount({
                     codeId: shop_discounts[0].codeId,
                     userId,
                     shopId,
@@ -106,11 +109,46 @@ class CheckoutService {
             checkout_order.totalCheckout += itemCheckout.priceApplyDiscount
             shop_order_ids_new.push(itemCheckout)
         }
+
         return {
             shop_order_ids,
             shop_order_ids_new,
             checkout_order
         }
+    }
+
+    // order
+
+    static async orderByUser({
+                                 shop_order_ids,
+                                 cartId,
+                                 userId,
+                                 user_address = {},
+                                 user_payment = {}
+                             }) {
+        const {shop_order_ids_new, checkout_order} = await CheckoutService.checkoutReview({
+            cartId,
+            userId,
+            shop_order_ids
+        })
+        //check lai 1 lan nua xem vuot ton kho hay khong?
+        // get new array products
+        const products = shop_order_ids_new.flatMap(order => order.item_products)
+        console.log('[1] products::', products)
+        const acquireProduct = []
+        for (let i = 0; i < products.length; i++) {
+            const {productId, quantity} = products[i]
+            const keyLock = await acquireLock(productId, quantity, cartId)
+            acquireProduct.push(keyLock ? true : false)
+            if (keyLock) {
+                await releaseLock(keyLock)
+            }
+        }
+        // neu co 1 san pham het hang trong kho
+        if (acquireProduct.includes(false)) throw new BadRequestError('Mot so san pham da duoc cap nhat vui long quay lai gio hang')
+
+        const newOrder = await order.create()
+        return newOrder
     }
 }
 
