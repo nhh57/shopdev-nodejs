@@ -32,7 +32,7 @@ const consumerQueue = async (channel, queueName) => {
         console.log(`awaiting for message...`);
         channel.consume(queueName, msg => {
             console.log(`Received message : ${queueName}::`, msg.content.toString())
-            // 1.find user following tabt SHOP
+            // 1.find user following table SHOP
             // 2. send message to user
             // 3. yes, ok => success
             // 4. error, setup DLX ...
