@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \\\\\\\"Error: no src/tests specified\\\\\\\" && exit 1",
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
@@ -12,8 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "amqplib": "^0.10.4",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "mongoose": "^8.4.4",
     "morgan": "^1.10.0"

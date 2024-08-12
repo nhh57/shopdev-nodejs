@@ -1,3 +1,5 @@
+npm init -y
+
 npm i express --save
 
 npm i morgan --save
@@ -15,6 +17,16 @@ npm  i crypto --save-dev
 npm i slugify --save-dev
 
 npm i redis --save-dev
+
+npm install kafkajs --save-dev
+
+npm install amqplib --save-dev
+
+npm install mongoose --save-dev
+
+npm install lodash --save-dev
+
+npm install jest --save-dev
 
 DEV_APP_PORT=3000
 DEV_DB_HOST =10.56.66.54
