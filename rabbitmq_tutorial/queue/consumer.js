@@ -9,17 +9,17 @@ const receiveQueue = async() => {
             // 2. create channel
         const channel = await conn.createChannel()
             // 3. create queue name
-        const nameQueue = 'q1'
+        const nameQueue = 'q2'
             // 4. create queue
         await channel.assertQueue(nameQueue, {
-                durable: false
+                durable: true
             })
             //5. send to queue
         await channel.consume(nameQueue, message => {
 
                 console.log(`MSG::`, message.content.toString())
             }, {
-                noAck: false
+                noAck: true
             })
             // 6. close connect and channel
     } catch (error) {

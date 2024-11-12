@@ -9,16 +9,22 @@ const sendQueue = async({ message }) => {
             // 2. create channel
         const channel = await conn.createChannel()
             // 3. create queue name
-        const nameQueue = 'q1'
+        const nameQueue = 'q2'
             // 4. create queue
         await channel.assertQueue(nameQueue, {
-                durable: false
+                durable: true
             })
             //5. send to queue
-        await channel.sendToQueue(nameQueue, Buffer.from(message))
+        await channel.sendToQueue(nameQueue, Buffer.from(message), {
+                persistent: true,
+                expiration: '1000'
+            })
             // 6. close connect and channel
     } catch (error) {
         console.error(`Error::`, error.message)
     }
 }
-sendQueue({ message: 'Hai pro' })
+const msg = process.argv.slice(2).join('') || 'Hello';
+console.log(`msg::%s`, msg);
+
+sendQueue({ message: msg })
